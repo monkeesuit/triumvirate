@@ -42,3 +42,4 @@ void push(KeySpaceElemnt ** head, char key, int frequency) {
     entry->next = *head;
     *head = entry;
 }
+}
