@@ -2,7 +2,16 @@
 //	a key: 		which is one of the english letters
 //	the frequency:	which is the frequency of the occurence of that letter
 //	values:		which is an array of digits that the key can encode to
-struct KeySpaceElement {
+
+// .c file
+
+
+#include <stdlib.h>
+#include <stdio.h>
+
+void push(char, int);        // Prototype needs to be defined here or compiler throws implicit call error
+
+struct KeySpaceElement {	
 	char key;
 	int frequency;
 	char values[60];
