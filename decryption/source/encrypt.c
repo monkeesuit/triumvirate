@@ -13,14 +13,14 @@ char *buffer[SIZE];
 int main() {
   int i;
   
-  read_into_buffer();       // Place message into gloabl buffer; from buffer.h
+  read_into_buffer();                         // Place message into gloabl buffer; from buffer.h
   
   printf("%s\n", buffer);
   
   for (i=0; i<27; i++) {
-    push(english_letters[i],frequency[i]);
+    push(english_letters[i],frequency[i]);    // Initialize Key Space; from keygenerator.h
   }
-  display();
+  display();                    
   
   return 0;
 }
