@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "prototype.h"
-#include "arrays.h"
 
+char english_letters[27];
+char frequency[27];
 int cipherdigits[106];
 
 // A KeySpaceElement consists of:
@@ -23,7 +23,7 @@ struct KeySpaceElement {
 struct KeySpaceElement *head = NULL;
 
 // Put an entry in the linked-list
-void push(char key, int frequency) {
+struct KeySpaceElement * push(char key, int frequency) {
   struct KeySpaceElement *entry;
   entry = malloc(sizeof(struct KeySpaceElement));
   
@@ -32,6 +32,8 @@ void push(char key, int frequency) {
   entry->remaining = frequency;
   entry->next = head;
   head = entry;
+  
+  return head;
 }
 
 // Display the linked-list
@@ -62,30 +64,19 @@ void pick() {
     index = rand() % 27;
     letter = english_letters[index];
     
-    printf("Keying: %c\n",letter);
-    
     struct KeySpaceElement *entry = head;
     
     while(entry != NULL) {
       if (entry->key==letter) {
-        printf("Found! (%c,%c)\n",entry->key,letter);
         if(entry->remaining >0){
           index = rand() % (106-nop);
-          
-          for(j = 0; j<(106); j++) {
-            printf("%d,",cipherdigits[j]);
-          }
-          printf("\n");
-          
           digit = cipherdigits[index];
-          printf("Inserting: %d\n",digit);
           
-          entry->values[entry->frequency-entry->remaining] = digit;
+          entry->values[entry->frequency - entry->remaining] = digit;
+          
           entry->remaining -= 1;
-          printf("Remaining: %d\n",entry->remaining);
           if (entry->remaining == 0) {
             keyed += 1;
-            printf("Keyed: %d\n",keyed);
           }
           
           cipherdigits[index] = cipherdigits[105-nop];
@@ -100,9 +91,10 @@ void pick() {
   }
 }
 
+/*
 int main(){
   int i;
-  
+
   for (i=0;i<106;i++) {
     cipherdigits[i]=i;
   }
@@ -117,3 +109,4 @@ int main(){
   
   return 0;	
 }
+ */
