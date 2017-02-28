@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include "protoype.h"
 
-void push(char, int);        // Prototype needs to be defined here or compiler throws implicit call error
-
 // A KeySpaceElement consists of:
 //	a key: 		which is one of the english letters
 //	the frequency:	which is the frequency of the occurence of that letter
