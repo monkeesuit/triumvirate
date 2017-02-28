@@ -55,12 +55,15 @@ void pick() {
         if(entry->frequency !=0){
           index = rand() % (105-nop);
           
-          for(j = 0; j<(106); j++) {
-            printf("%d,",cipherdigits[j]);
-          }
-          printf("\n");
+          // debug - for(j = 0; j<(106); j++) {
+          // debug -   printf("%d,",cipherdigits[j]);
+          // debug - }
+          // debug - printf("\n");
+		
           digit = cipherdigits[index];
-          printf("[%d]\n", digit);
+		
+          // debug - printf("[%d]\n", digit);
+		
           cipherdigits[index] = cipherdigits[105-nop];
           cipherdigits[105-nop] = '\0';
           nop++;
