@@ -1,8 +1,6 @@
 #include <stdio.h>
+#include "prototype.h"
 #include "arrays.h"               //Had to define the function prototypes here
-
-void push(char k, int f);
-void display();
 
 int main() {
   int i;
