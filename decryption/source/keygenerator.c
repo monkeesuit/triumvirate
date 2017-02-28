@@ -37,3 +37,36 @@ void display() {
 		entry = entry->next;
 	}
 }
+
+void pick() {
+  srand(time(NULL));
+  int i, j, index, letter, digit, nop;
+  
+  nop=0;
+  
+  for(i=0;i<10;i++) {
+    index = rand() % 26;
+    letter = english_letters[index];
+    
+    struct KeySpaceElement *entry = head;
+    
+    while(entry != NULL) {
+      if (entry->key==letter) {
+        if(entry->frequency !=0){
+          index = rand() % (105-nop);
+          
+          for(j = 0; j<(106); j++) {
+            printf("%d,",cipherdigits[j]);
+          }
+          printf("\n");
+          digit = cipherdigits[index];
+          printf("[%d]\n", digit);
+          cipherdigits[index] = cipherdigits[105-nop];
+          cipherdigits[105-nop] = '\0';
+          nop++;
+        }
+      }
+      entry = entry->next;
+    }
+  }
+}
