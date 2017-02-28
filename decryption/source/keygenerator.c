@@ -3,7 +3,7 @@
 #include <time.h>
 
 char english_letters[27];
-char frequency[27];
+int frequency[27];
 int cipherdigits[106];
 
 // A KeySpaceElement consists of:
