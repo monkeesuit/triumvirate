@@ -1,12 +1,11 @@
 // This function places a message in a global buffer
 
-// Needs to be a .c file
-#include <unistd.h>           // Can't call read function without including <unistd.h>
+#include <unistd.h>
 
-#define SIZE 500;             // SIZE Needs to be defined here
+#define SIZE 500;
 
 int read_into_buffer() {
-  extern char buffer[SIZE];       // Doesn't need to be a pointer
+  extern char buffer[SIZE];
   
   read(0, buffer, SIZE);
   
