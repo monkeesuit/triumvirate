@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <time.h>
 #include "arrays.h"
-
-  int cipherdigits[106];
+ 
+int cipherdigits[106];
 
 // A KeySpaceElement consists of:
 //	a key: 		which is one of the english letters
