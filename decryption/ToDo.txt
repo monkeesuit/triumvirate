@@ -1,0 +1,37 @@
+(1) Finish buildkey.c
+
+(2) Finish decrypt.c
+
+(3) Build an analyzer
+
+	[+]	Get useful data out of the words dictionary - this info will be hard 		coded into our code to assist in the cracking of messages
+
+		-> average word length
+		-> average length of word starting with each letter
+			(i.e. average length of words that begin with a, average 				 length of words that begin with b,…) 
+		-> average length of word ending with each letter
+
+		-> frequency of each letter
+		-> frequency of words starting with each letter
+		-> frequency of words ending with each letter
+
+		-> frequency of letter pairs
+		-> frequency of words beginning with each letter pair
+		-> frequency of words ending with each letter pair
+
+	[+]	Get useful data out of the cipher
+
+		-> frequency of characters
+		-> frequency of pairs of characters
+
+	[+]	Make an educated guess as to what the keys may be
+	
+		-> make rules as to how to construct key (i.e. the character to the 				left and the right of an encoded space cannot be a space, b/c 			two consecutive spaces will never occur.
+
+	[+]	Decrypt using that key
+
+	[+] 	Check if decryption is correct
+		
+		if not:
+		-> determine how incorrect (spell check)
+		-> try and get some useful info that will help in the next decryption 		 	attempt
