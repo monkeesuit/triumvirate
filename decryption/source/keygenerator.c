@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include "arrays.h"
 
-char english_letters[27];
-int frequency[27];
 int cipherdigits[106];
 
 // A KeySpaceElement consists of:
@@ -91,22 +90,43 @@ void pick() {
   }
 }
 
-/*
+void write_to_file() {
+  int i;
+  
+  FILE *f =fopen("key.txt","w");
+  if (f == NULL)
+  {
+    printf("Error opening file!\n");
+    exit(1);
+  }
+  
+  struct KeySpaceElement *entry = head;
+  
+  while(entry != NULL) {
+    fprintf(f,"%c\n",entry->key);
+    for(i=0; i< entry->frequency; i++) {
+      fprintf(f,"%d,", entry->values[i]);
+    }
+    fprintf(f,"\n");
+    entry = entry->next;
+  }
+}
+
+
 int main(){
   int i;
 
-  for (i=0;i<106;i++) {
+  for (i=0; i<106; i++) {
     cipherdigits[i]=i;
   }
   
   for (i=0; i<27; i++) {
     push(english_letters[i],frequency[i]);    // Initialize Key Space; from keygenerator.h
   }
-  
-  display();
+
   pick();
   display();
+  write_to_file();
   
   return 0;	
 }
- */
