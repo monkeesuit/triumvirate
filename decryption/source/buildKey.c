@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "arrays.h"
 #include <unistd.h>
+
+#include "arrays.h"
+
 #define SIZE 500
 
-int read_into_buffer();
+char buffer[SIZE];
+
 // Initialize the linked-lis
 struct KeySpaceElement *head = NULL;
 
@@ -30,7 +33,6 @@ struct KeySpaceElement * push(char key, int frequency) {
   return head;
 }
 
-char buffer[SIZE];
 int read_into_buffer() {
   extern char buffer[SIZE];
   read(0, buffer, SIZE);
@@ -57,96 +59,75 @@ void display() {
 
 int main(void) {
 
-    int line_count = 0;
-    int counter = 0;
-    int left_bound = 0;
-    int right_bound = 0;
-    int value_index = -1;
-    int rb = 0;
-    int lb = 0;
-    int c = 0;
-    char digit[4];
-    char key;
+  int line_count = 0;
+  int counter = 0;
+  int left_bound = 0;
+  int right_bound = 0;
+  int value_index = -1;
+  int rb = 0;
+  int lb = 0;
+  int c = 0;
+  char digit[4];
+  char key;
 
 
-    for (int i=0; i<27; i++) {
-        head = push(english_letters[i],frequency[i]);
+  for (int i=0; i<27; i++) {
+      head = push(english_letters[i],frequency[i]);
+  }
+
+  display();
+  read_into_buffer();
+  
+  for (int i = 1; i < strlen(buffer); i++) {
+    if (buffer[i] != '\n') {
+      counter += 1;
     }
+    if (buffer[i] == '\n') {
+      if (line_count % 2 == 0) {
+        counter += 1;
+        right_bound = left_bound + counter;
+        key = buffer[left_bound + 1];
 
-    display();
-    read_into_buffer();
-    for (int i = 1; i < strlen(buffer); i++) {
-        //printf("%c", buffer[i]);
-        if (buffer[i] != '\n') {
-            counter += 1;
-        }
-        if (buffer[i] == '\n') {
-            if (line_count % 2 == 0) {
-                printf("\tKEY\t");
-                counter += 1;
-                right_bound = left_bound + counter;
-                printf("LEFT BOUND = %d\t\t", left_bound);
-                    //printf("%c", buffer[j]);
-                    key = buffer[left_bound + 1];
-                    printf("%c", key);
+        printf("\tKEY\t");
+        printf("LEFT BOUND = %d\t\t", left_bound);
+        printf("%c", key);
+        printf("\t\tRIGHT BOUND = %d", right_bound);
+        putchar('\n');
 
-                printf("\t\tRIGHT BOUND = %d", right_bound);
-                putchar('\n');
-                left_bound = right_bound;
-                counter = 0;
-                line_count += 1;
+        left_bound = right_bound;
+        counter = 0;
+        line_count += 1;
+              
+      } else {
+        counter += 1;
+        lb = left_bound;
+        right_bound = left_bound + counter;
+        printf("\tVALUES\t");
+        printf("LEFT BOUND = %d\t\t", left_bound);
+        for (int j = left_bound + 1 ; j < right_bound; j++) {
+          if (buffer[j] != ',') {
+            c += 1;
+          } else if (buffer[j] == ',') {
+            c += 1;
+            rb = lb + c;
+            memset(digit, 0, sizeof(digit));
+            for (int k = lb + 1; k < rb; k++) {
+              digit[k - lb + 1] = buffer[k];
             }
-            else {
-                printf("\tVALUES\t");
-                counter += 1;
-                lb = left_bound;
-                right_bound = left_bound + counter;
-                printf("LEFT BOUND = %d\t\t", left_bound);
-                for (int j = left_bound + 1 ; j < right_bound; j++) {
-                //    printf("XXXXX: %c", buffer[j-1]);
-                //    if (buffer[j] == ',') {
-                //        value_index += 1;
-                //        printf("\t\tBUFFER J: %d VALUE_INdEX: %d",
-                //                    buffer[j-1], value_index);
-                //    }
-                    if (buffer[j] != ',') {
-                        c += 1;
-                    }
-                    else if (buffer[j] == ',') {
-                        c += 1;
-                        rb = lb + c;
-                        memset(digit, 0, sizeof(digit));
-                        for (int k = lb + 1; k < rb; k++) {
-                            digit[k - lb + 1] = buffer[k];
-                        }
-                    //    for (int z = 0; z < 4; z++) {
-                       printf("%s", digit);
-                    //   memset(digit, 0, sizeof(digit));
-                      // }
-                       putchar(',');
+            printf("%s", digit);
+            putchar(',');
 
-                        lb = rb;
-                        c = 0;
-                        value_index += 1;
-
-
-                    }
-
-
-
-
-                }
-
-                printf("\t\tRIGHT BOUND = %d", right_bound);
-                putchar('\n');
-                left_bound = right_bound;
-                counter = 0;
-                line_count +=1;
-            }
-
+            lb = rb;
+            c = 0;
+            value_index += 1;
+          }
         }
-        //printf("%c", buffer[
+        printf("\t\tRIGHT BOUND = %d", right_bound);
+        putchar('\n');
+        left_bound = right_bound;
+        counter = 0;
+        line_count +=1;
+      }
     }
-        printf("\n\n\\n count = %d\n", line_count);
-
+  }
 }
