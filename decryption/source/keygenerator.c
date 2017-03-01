@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <time.h>
 #include "arrays.h"
- 
+
+
 int cipherdigits[106];
+
 
 // A KeySpaceElement consists of:
 //	a key: 		which is one of the english letters
@@ -19,6 +21,7 @@ struct KeySpaceElement {
 
 // Initialize the linked-list
 struct KeySpaceElement *head = NULL;
+
 // Put an entry in the linked-list
 struct KeySpaceElement * push(char key, int frequency) {
   struct KeySpaceElement *entry;
@@ -31,24 +34,6 @@ struct KeySpaceElement * push(char key, int frequency) {
   head = entry;
   
   return head;
-}
-
-// Display the linked-list
-void display() {
-  int i;
-  
-  // walk the linked-list
-  struct KeySpaceElement *entry = head;
-  while(entry != NULL) {
-    printf("%c\n", entry->key);               // display english letter
-    printf("[");
-    for(i=0; i<entry->frequency; i++) {       // display cipher digits
-      printf("%d,",entry->values[i]);
-    }
-    printf("]\n\n");
-    
-    entry = entry->next;
-  }
 }
 
 // Key the linked-list
@@ -90,6 +75,8 @@ void pick() {
   }
 }
 
+
+
 // Writes key to file key.txt
 void write_to_file() {
   int i;
@@ -112,6 +99,29 @@ void write_to_file() {
     entry = entry->next;
   }
 }
+
+
+
+// Display the linked-list
+void display() {
+  int i;
+  
+  // walk the linked-list
+  struct KeySpaceElement *entry = head;
+  while(entry != NULL) {
+    printf("%c\n", entry->key);               // display english letter
+    printf("[");
+    for(i=0; i<entry->frequency; i++) {       // display cipher digits
+      printf("%d,",entry->values[i]);
+    }
+    printf("]\n\n");
+    
+    entry = entry->next;
+  }
+}
+
+
+
 
 
 int main(){
