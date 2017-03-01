@@ -3,6 +3,8 @@
 #include <time.h>
 #include "arrays.h"
 
+  int cipherdigits[106];
+
 // A KeySpaceElement consists of:
 //	a key: 		which is one of the english letters
 //	the frequency:	which is the frequency of the occurence of that letter
@@ -49,7 +51,7 @@ void display() {
   }
 }
 
-// Key the linked-list 
+// Key the linked-list
 void pick() {
   int i, j, index, letter, digit, nop, keyed;
   
@@ -57,13 +59,13 @@ void pick() {
   nop=0;                                                 // nop   -> keeps track of how many cipher digits have been chosen
   
   // loop until all have been keyed
-  while(keyed<27) {                                      
+  while(keyed<27) {
     index = rand() % 27;                                    // pick a random letter (<space>,a,b,c,...z)
     letter = english_letters[index];
     
     // walk the linked-list
-    struct KeySpaceElement *entry = head;        
-    while(entry != NULL) {                                  
+    struct KeySpaceElement *entry = head;
+    while(entry != NULL) {
       if (entry->key==letter) {                               // if we find the entry that matches the random letter we chose,
         if(entry->remaining >0){                              // and it is not keyed (remaining=0 => keyed +1)
           entry->remaining -= 1;
@@ -114,20 +116,19 @@ void write_to_file() {
 
 int main(){
   int i;
-  int cipherdigits[106];
   srand(time(NULL));
-
+  
   for (i=0; i<106; i++) {
     cipherdigits[i]=i;
   }
   
   for (i=0; i<27; i++) {
-    push(english_letters[i],frequency[i]);    
+    push(english_letters[i],frequency[i]);
   }
-
+  
   pick();
   display();
   write_to_file();
   
-  return 0;	
+  return 0;
 }
