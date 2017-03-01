@@ -71,7 +71,6 @@ void pick() {
       }
       entry = entry->next;
     }
-    
   }
 }
 
