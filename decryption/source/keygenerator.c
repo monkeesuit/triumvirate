@@ -135,7 +135,6 @@ int main(){
   for (i=0; i<27; i++) {
     push(english_letters[i],frequency[i]);
   }
-  
   pick();
   display();
   write_to_file();
