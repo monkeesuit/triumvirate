@@ -58,77 +58,86 @@ void display() {
 }
 
 int main(void) {
-  
-  int index =0;
-  int line_count = 0;
-  int counter = 0;
-  int left_bound = 0;
-  int right_bound = 0;
-  int value_index = -1;
-  int rb = 0;
-  int lb = 0;
-  int c = 0;
-  char digit[4];
-  char assign_key;
-  
   int i, j, k;
   
+  int index = 0;
+  int line_counter, line_character_counter = 0;
+  int line_leftbound, line_rightbound = 0;
+  int digit_leftbound, digit_rightbound = 0;
+  int digit_character_counter = 0;
+  char digit[4];
+  char letter;
+  
   struct KeySpaceElement *entry;
-  struct KeySpaceElement *head_a;
   
   
+  // Build key space
   for (i=0; i<27; i++) {
-    head_a = push(english_letters[i],frequency[i]);
+    head = push(english_letters[i],frequency[i]);
   }
   
+  
+  // Get key data
   read_in_data();
   
+  
+  // Parse key data and put in out KeySpaceElement structure
   for (i = 1; i < strlen(data); i++) {
-    if (data[i] != '\n') {
-      counter += 1;
-    }
-    if (data[i] == '\n') {
-      if (line_count % 2 == 0) {
-        counter += 1;
-        right_bound = left_bound + counter;
-        assign_key = data[left_bound + 1];
-        
+    if (data[i] != '\n') {               // If we encounter a non newline character we just increment the line_character_counter
+      line_character_counter += 1;
+      
+    } else if (data[i] == '\n') {        // If we encounter a newline character we do some stuff
+      line_character_counter += 1;
+
+      if (line_counter % 2 == 0) {            // If the line is an even line in our text file then it contains the letter
+        line_counter += 1;                                            // increment line_counter
 
         
-        left_bound = right_bound;
-        counter = 0;
-        line_count += 1;
+        // Get line - contains letter
+        line_rightbound = line_leftbound + line_character_counter;    // Use bounds to slice buffer in a way that we can pull out the useful information
+                                                                      // line_leftbound initializes to 0 and then keeps the index of the last newline character encountered
+                                                                      // line_rightbound will equal the next newline character in the file
         
-      } else {
-        counter += 1;
-        lb = left_bound;
-        right_bound = left_bound + counter;
+        letter = data[line_leftbound + 1];                            // Get letter from file
         
-        for (j = left_bound + 1 ; j < right_bound; j++) {
+        line_leftbound = line_rightbound;                             // Update line_leftbound
+        
+        
+        
+      } else if (line_counter % 2 == 1) {     // If the line is an odd line in our text file then it contains the cipher digits
+        line_counter += 1;                                            // increment line_counter
+        
+        // Get line - contains cipher digits
+        digit_leftbound = line_leftbound;                             // cipher digits need to be manipulated to be cast from char to int
+                                                                      // we must use bounds to slice the line up and extract the digit
+                                                                      // digit_leftbound is initialized to 0 and keeps track of the last comma encounterd
+        
+        line_rightbound = line_leftbound + line_character_counter;
+        for (j = line_leftbound + 1 ; j < line_rightbound; j++) {
           
-          if (data[j] != ',') {
-            c += 1;
+          if (data[j] != ',') {                                       // If the character is not a comma then it is a digit, count it
+            digit_character_counter += 1;
             
-          } else if (data[j] == ',') {
-            c += 1;
+          } else if (data[j] == ',') {                                 // if the character is a comma then we have found the rightbound of the digit
+            digit_character_counter += 1;
             
-            rb = lb + c;
+            digit_rightbound = digit_leftbound + digit_character_counter;
             
             memset(digit, 0, sizeof(digit));
-            for (k = lb + 1; k < rb; k++) {
-              digit[index] = data[k];
+            for (k = digit_leftbound + 1; k < digit_rightbound; k++) { // get the cipher digit out of data
+              digit[index] = data[k];                                   // put cipher digit in digit array
               index += 1;
             }
             index = 0;
             
-            lb = rb;
-            c = 0;
-            value_index += 1;
+            digit_leftbound = digit_rightbound;                        // update digit_leftbound
+            digit_character_counter = 0;
             
-            entry = head_a;
+            // Put key's cipher digit in its structure as an int
+            entry = head;
             while(entry != NULL) {
-
-              if (entry->key == assign_key){
+              
+              if (entry->key == letter){
                 entry->values[ entry->frequency - entry->remaining ] = atoi(digit);
                 entry->remaining -= 1;
                 break;
@@ -136,15 +145,16 @@ int main(void) {
               
               entry = entry->next;
             }
+            // Key has been entered
             
           }
         }
         
-        left_bound = right_bound;
-        counter = 0;
-        line_count +=1;
+        line_leftbound = line_rightbound;
       }
-    }
-  }
+      line_character_counter = 0;
+    }// Done processing line
+  }// Done processing data
+  
   display();
 }
