@@ -9,6 +9,12 @@
 
 char data[SIZE];
 
+int read_in_data() {
+  extern char data[SIZE];
+  read(0, data, SIZE);
+  return 0;
+}
+
 // Initialize the linked-lis
 struct KeySpaceElement *head = NULL;
 
@@ -31,12 +37,6 @@ struct KeySpaceElement * push(char key, int frequency) {
   head = entry;
   
   return head;
-}
-
-int read_in_data() {
-  extern char data[SIZE];
-  read(0, data, SIZE);
-  return 0;
 }
 
 // Display the linked-list
