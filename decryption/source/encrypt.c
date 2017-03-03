@@ -1,76 +1,84 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 #include "arrays.h"
-#include "prototype.h"
+#include "loadkey.h"
+#include "getfilebyname.h"
 
 #define SIZE 500
 
-struct KeySpaceElement {
-  char key;
-  int frequency;
-  int remaining;
-  char values[60];
-  struct KeySpaceElement *next;
-};
 
-char buffer[SIZE];
+
+char message[SIZE];
 int cipher[SIZE];
 int cipherdigits[106];
 
 
-int read_into_buffer() {
-  extern char buffer[SIZE];
-  
-  read(0, buffer, SIZE);
-  
-  return 0;
-}
-
-void encrypt(char character, int position, struct KeySpaceElement * pointer) {
+void encrypt_character(struct KeySpaceElement *key, char character, int position) {
   int choice, encryptedbit;
   
-  struct KeySpaceElement *entry = pointer;
-  
-  while(entry != NULL) {
-    if (entry->key == character) {
-      choice = position % entry->frequency;
-      encryptedbit = entry->values[choice];
+  while(key != NULL) {
+    if (key->key == character) {
+      choice = position % key->frequency;
+      encryptedbit = key->values[choice];
       cipher[position] = encryptedbit;
       break;
     }
-    entry = entry->next;
+    key = key->next;
   }
 }
 
 int main() {
   int i;
-  struct KeySpaceElement * head;
-  char character;
+  char filename[100];
+  char *data;
+  char *message;
   
-  read_into_buffer();       // Place message into gloabl buffer; from buffer.h
+  struct KeySpaceElement *head = NULL;
+  struct KeySpaceElement *key;
   
-  for (i=0;i<106;i++) {
-    cipherdigits[i]=i;
-  }
   
+  //  [-DEBUG-]printf("start...\n");
+
+
+  // Build key space
   for (i=0; i<27; i++) {
-    head = push(english_letters[i],frequency[i]);    // Initialize Key Space; from keygenerator.h
+    //  [-DEBUG-]printf("Push Iteration: %d...\n", i);
+    
+    head = push(head,english_letters[i],frequency[i]);
   }
+  //  [-DEBUG-]printf("Key Initialized\n", i);display(head);
+
+  data = enterfile();
+  // [-DEBUG-]printf("File Read!\n%s\n",data);
+
   
-  pick();
-  display();
+  // Parse key data
+  key = parse_data(head, data);
+  // [-DEBUG-]
+  printf("Key Made!\n");
+  display(key);
   
+  
+  
+  message = enterfile();
+  // [-DEBUG-]printf("File Read!\n%s\n",data);
+
+  
+  
+  // Encrypt the message
   for (i=0; i<500; i++) {
-    character = buffer[i];
-    //printf("%c\n",character);
-    encrypt(character, i, head);
+    encrypt_character(key, message[i], i);
   }
-  printf("%s\n", buffer);
   
+  //  [-DEBUG-]
+  
+  printf("%s\n", message);
   for(i=0;i<500;i++) {
     printf("%d,",cipher[i]);
   }
+  
   
   return 0;
 }
