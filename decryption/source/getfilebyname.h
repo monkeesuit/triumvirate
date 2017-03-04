@@ -1,1 +1,0 @@
-char *enterfile(void);
