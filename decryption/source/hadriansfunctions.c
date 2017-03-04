@@ -129,7 +129,7 @@ char *read(char *filename) {
 
 
 
-
+/*
 int main(void) {
   char *data = malloc(10000 * sizeof(char*));
   char *buffer = malloc(128 * sizeof(char*));
@@ -144,6 +144,7 @@ int main(void) {
   } while(strlen(buffer));
   
 }
+*/
 
 
 
